@@ -1,10 +1,10 @@
-package ir.amirkakavand;
+package sample;
 
 
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
-class GFG {
+class Hamilton {
     public static final int N = 8;
 
 
@@ -34,7 +34,7 @@ class GFG {
     }
 
 
-    Cell nextMove(int a[], Cell cell) {
+    Element nextMove(int a[], Element element) {
         int min_deg_idx = -1, c,
                 min_deg = (N + 1), nx, ny;
 
@@ -44,8 +44,8 @@ class GFG {
         int start = ThreadLocalRandom.current().nextInt(1000) % N;
         for (int count = 0; count < N; ++count) {
             int i = (start + count) % N;
-            nx = cell.x + cx[i];
-            ny = cell.y + cy[i];
+            nx = element.x + cx[i];
+            ny = element.y + cy[i];
             if ((isEmpty(a, nx, ny)) &&
                     (c = getDegree(a, nx, ny)) < min_deg) {
                 min_deg_idx = i;
@@ -58,25 +58,25 @@ class GFG {
             return null;
 
         // Store coordinates of next point
-        nx = cell.x + cx[min_deg_idx];
-        ny = cell.y + cy[min_deg_idx];
+        nx = element.x + cx[min_deg_idx];
+        ny = element.y + cy[min_deg_idx];
 
         // Mark next move
-        a[ny * N + nx] = a[(cell.y) * N +
-                (cell.x)] + 1;
+        a[ny * N + nx] = a[(element.y) * N +
+                (element.x)] + 1;
 
         // Update next point
-        cell.x = nx;
-        cell.y = ny;
+        element.x = nx;
+        element.y = ny;
 
-        return cell;
+        return element;
     }
 
 
     void print(int[] a) {
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j)
-                System.out.printf("%02d\t", a[j * N + i]);
+                System.out.printf("[%02d]\t", a[j * N + i]);
             System.out.printf("\n");
         }
     }
@@ -103,14 +103,14 @@ class GFG {
         int sy = iPos - 1;
 
 
-        Cell cell = new Cell(sx, sy);
+        Element element = new Element(sx, sy);
 
-        a[cell.y * N + cell.x] = 1;
+        a[element.y * N + element.x] = 1;
 
 
-        Cell ret = null;
+        Element ret = null;
         for (int i = 0; i < N * N - 1; ++i) {
-            ret = nextMove(a, cell);
+            ret = nextMove(a, element);
             if (ret == null)
                 return false;
         }
@@ -134,17 +134,17 @@ class GFG {
         int inputY = scanner.nextInt();
 
 
-        while (!new GFG().findClosedTour(inputX, inputY)) {
-            ;
+        while (!new Hamilton().findClosedTour(inputX, inputY)) {
+
         }
     }
 }
 
-class Cell {
+class Element {
     int x;
     int y;
 
-    public Cell(int x, int y) {
+    public Element(int x, int y) {
         this.x = x;
         this.y = y;
     }
